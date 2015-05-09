@@ -1,0 +1,8 @@
+Party number is: {{ ctrl.partyId }} . Here you will see and change the details of the party:
+
+<input ng-model="ctrl.party.name">
+<input ng-model="ctrl.party.description">
+	
+<button ng-click="ctrl.save()">Save</button>
+<button ng-click="ctrl.reset()">Reset form</button>
+<button><a ui-sref="parties">Cancel</a></button>
