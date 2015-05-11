@@ -5,14 +5,15 @@
 		<input ng-model="newParty.name">
 		<label>Description</label>
 		<input ng-model="newParty.description">
-		<button ng-click="ctrl.parties.save(newParty); newParty='';">Add</button>
+		<label>Public</label>
+		<input type="checkbox" ng-model="newParty.public">
+		<button ng-click="newParty.owner=$root.currentUser._id; ctrl.parties.push(newParty)">Add</button>
 		<button ng-click="ctrl.removeAll()">Remove All</button>
 	</form>
 	
 	<h1 ng-repeat="greetname in ctrl.greetnames">Hello, {{greetname.name}}</h1>
 	<ul>
 		<li ng-repeat="party in ctrl.parties">
-<!--			<a href="/parties/{{party._id}}">{{party.name}}</a>-->
 			<a ui-sref="partyDetails({partyId: party._id})">{{party.name}}</a>
 			<p>{{party.description}}</p>
 			<button ng-click="ctrl.removeParty(party)">X</button>

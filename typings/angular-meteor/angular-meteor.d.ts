@@ -53,7 +53,7 @@ declare module angular.meteor {
          * @param [autoClientSave=true] - By default, changes in the Angular collection will automatically update the Meteor collection. 
          *                              - However if set to false, changes in the client won't be automatically propagated back to the Meteor collection.
          */
-        collection<T>(collection: Mongo.Collection<T>|ReactiveResult, autoClientSave?: boolean): AngularMeteorCollection<T>;
+        collection<T>(collection: Mongo.Collection<T>|ReactiveResult|Function|(()=>Mongo.Cursor<T>), autoClientSave?: boolean): AngularMeteorCollection<T>;
         
         /**
          * A service that wraps the Meteor collections to enable reactivity within AngularJS.
@@ -64,7 +64,7 @@ declare module angular.meteor {
          *                              - However if set to false, changes in the client won't be automatically propagated back to the Meteor collection.
          * @param [updateCollection] - A collection object which will be used for updates (insert, update, delete).
          */
-        collection<T, U>(collection: Mongo.Collection<T>|ReactiveResult, autoClientSave: boolean, updateCollection: Mongo.Collection<U>): AngularMeteorCollection2<T, U>;
+        collection<T, U>(collection: Mongo.Collection<T>|ReactiveResult|Function|(()=>Mongo.Cursor<T>), autoClientSave: boolean, updateCollection: Mongo.Collection<U>): AngularMeteorCollection2<T, U>;
         
         /**
          * A service that wraps a Meteor object to enable reactivity within AngularJS. 
@@ -277,6 +277,14 @@ declare module angular.meteor {
          * The returned object is then safe to use as a parameter for method calls, or anywhere else where the data needs to be converted to JSON.
          */
         getRawObject(): T;
+
+        /**
+         * A shorten (Syntactic sugar) function for the $meteor.subscribe function.
+         * Takes only one parameter and not returns a promise like $meteor.subscribe does.
+         * 
+         * @param subscriptionName - The subscription name to subscribe to. Exactly like the first parameter in $meteor.subscribe service.
+         */        
+        subscribe(subscriptionName:string): AngularMeteorObject<T>;
     }
     
     /**
