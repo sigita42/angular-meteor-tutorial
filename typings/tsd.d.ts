@@ -5,3 +5,4 @@
 /// <reference path="node/node.d.ts" />
 /// <reference path="angular-meteor/angular-meteor.d.ts" />
 /// <reference path="jquery/jquery.d.ts" />
+/// <reference path="underscore/underscore.d.ts" />

@@ -8,7 +8,13 @@ Party number is: {{ ctrl.partyId }} . Here you will see and change the details o
 <button ng-click="ctrl.save()">Save</button>
 <button ng-click="ctrl.reset()">Reset form</button>
 <button><a ui-sref="parties">Cancel</a></button>
-	
+
+<ul>
+	Users to invite:
+	<li ng-repeat="user in ctrl.users | uninvited:ctrl.party">
+		<div>{{ user | displayName }}</div>
+	</li>
+</ul>
 <ul>
 	Users:
 	<li ng-repeat="user in ctrl.users">

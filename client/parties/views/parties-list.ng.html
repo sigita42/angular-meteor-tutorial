@@ -26,6 +26,7 @@
 			<a ui-sref="partyDetails({partyId: party._id})">{{party.name}}</a>
 			<p>{{party.description}}</p>
 			<button ng-click="ctrl.removeParty(party)">X</button>
+			<p><small>Posted by {{ ctrl.creator(party) | displayName }}</small></p>
 		</li>
 	</ul>
 	<dir-pagination-controls on-page-change="ctrl.pageChanged(newPageNumber)"></dir-pagination-controls>

@@ -8,6 +8,7 @@ module socially {
 	    description: string;
 	    _id: string;
 		owner: string;
+		invited: string[];
 	}
 
 	export interface IGreetname {

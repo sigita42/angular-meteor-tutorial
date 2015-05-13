@@ -16,7 +16,8 @@ class PartiesListCtrl {
     public orderProperty = 1;
     public partiesCount: ICountsAngularMeteorObject;
         
-    constructor($scope: ng.meteor.IScope, private $meteor: angular.meteor.IMeteorService) {
+    constructor($scope: ng.meteor.IScope, private $meteor: angular.meteor.IMeteorService, private $rootScope: ng.meteor.IRootScopeService) {
+        
         this.parties = $meteor.collection(() => {
             return Parties.find({}, {
                 sort: $scope.getReactively('ctrl.sort')
@@ -39,6 +40,24 @@ class PartiesListCtrl {
             });
         });
         $scope.$watch('ctrl.orderProperty', this.updateSorting.bind(this));
+        $meteor.subscribe('users');
+        
+//        function creator(party: IParty){
+//            if(!party)
+//                return;
+//            var owner: any = this.getUserById(party.owner);
+//            if(!owner)
+//                return "nobody";
+//                
+//            if ( $rootScope.currentUser )
+//                if( $rootScope.currentUser._id )
+//                    if (owner._id === $rootScope.currentUser._id)
+//                        return "me";
+//        };
+    }
+    
+    public getUserById (userId: string){
+        return Meteor.users.findOne(userId);
     }
     
     public removeParty(party: IParty){
@@ -58,9 +77,24 @@ class PartiesListCtrl {
             this.sort = {name: +this.orderProperty};
         }
     }
+    
+    public creator(party: IParty): string|Meteor.User{
+        if(!party)
+            return null;
+        var owner = this.getUserById(party.owner);
+        if(!owner)
+            return "nobody";
+            
+        if ( this.$rootScope.currentUser )
+           if( this.$rootScope.currentUser._id )
+               if (owner._id === this.$rootScope.currentUser._id)
+                    return "me";
+        // else
+        return owner;
+    }
 } 
-       
+        
 angular.module("socially")
-    .controller("PartiesListCtrl", ['$scope', '$meteor', PartiesListCtrl]);
+    .controller("PartiesListCtrl", ['$scope', '$meteor', '$rootScope', PartiesListCtrl]);
     
 }

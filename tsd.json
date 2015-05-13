@@ -22,6 +22,9 @@
     },
     "jquery/jquery.d.ts": {
       "commit": "6c2589a6335713cc5b88701d607a2770f1c53b63"
+    },
+    "underscore/underscore.d.ts": {
+      "commit": "846a250e0a6f5e6adf6347ee4ca442a9d1abd8fc"
     }
   }
 }
