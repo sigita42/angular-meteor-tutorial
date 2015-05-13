@@ -1,2 +1,2 @@
 /// <reference path="../typings/tsd.d.ts" />
-/// <reference path="../model/parties.ts" />
+/// <reference path="../model/tsd.d.ts" />

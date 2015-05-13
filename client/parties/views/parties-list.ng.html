@@ -12,13 +12,22 @@
 	</form>
 	
 	<h1 ng-repeat="greetname in ctrl.greetnames">Hello, {{greetname.name}}</h1>
+	<h1>Parties:</h1>
+	<div>
+		<input type="search" ng-model="ctrl.search" placeholder="Search">
+		<select ng-model="ctrl.orderProperty">
+			<option value="1">Ascending</option>
+			<option value="-1">Descending</option>
+		</select>
+	</div>
 	<ul>
-		<li ng-repeat="party in ctrl.parties">
+		<li dir-paginate="party in ctrl.parties | itemsPerPage: ctrl.perPage" total-items="ctrl.partiesCount.count">
+<!--		<li dir-paginate="party in ctrl.parties | itemsPerPage: ctrl.perPage" total-items="10">-->
 			<a ui-sref="partyDetails({partyId: party._id})">{{party.name}}</a>
 			<p>{{party.description}}</p>
 			<button ng-click="ctrl.removeParty(party)">X</button>
 		</li>
 	</ul>
-	<p>Total number of parties: {{ctrl.parties.length}}</p>
-	
+	<dir-pagination-controls on-page-change="ctrl.pageChanged(newPageNumber)"></dir-pagination-controls>
+
 </div>
