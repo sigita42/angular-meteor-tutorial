@@ -1,6 +1,6 @@
 <!--{{}} is a binding projecting application model, which is set up in the controller-->
 <div>
-	<form>
+	<form ng-show="$root.currentUser">
 		<label>Name</label>
 		<input ng-model="newParty.name">
 		<label>Description</label>
@@ -10,6 +10,7 @@
 		<button ng-click="newParty.owner=$root.currentUser._id; ctrl.parties.push(newParty)">Add</button>
 		<button ng-click="ctrl.removeAll()">Remove All</button>
 	</form>
+	<div ng-hide="$root.currentUser || $root.loggingIn">Log in to create a party!</div>
 	
 	<h1 ng-repeat="greetname in ctrl.greetnames">Hello, {{greetname.name}}</h1>
 	<h1>Parties:</h1>
@@ -25,13 +26,16 @@
 <!--		<li dir-paginate="party in ctrl.parties | itemsPerPage: ctrl.perPage" total-items="10">-->
 			<a ui-sref="partyDetails({partyId: party._id})">{{party.name}}</a>
 			<p>{{party.description}}</p>
-			<button ng-click="ctrl.removeParty(party)">X</button>
+			<button ng-click="ctrl.removeParty(party)" ng-show="$root.currentUser && $root.currentUser._id == party.owner">X</button>
 			<p><small>Posted by {{ ctrl.creator(party) | displayName }}</small></p>
-   			<div>
+   			<div ng-show="$root.currentUser">
 		      <input type="button" value="I'm going!" ng-click="ctrl.rsvp(party._id, 'yes')">
 		      <input type="button" value="Maybe" ng-click="ctrl.rsvp(party._id, 'maybe')">
 		      <input type="button" value="No" ng-click="ctrl.rsvp(party._id, 'no')">
 		    </div>
+			<div ng-hide="$root.currentUser">
+				<i>Sign in to RSVP for this party!</i>
+			</div>
 			<div>
 				Who is coming?
 				Yes - {{ (party.rsvps | filter:{rsvp: 'yes'}).length }}
@@ -47,12 +51,13 @@
 					{{ ctrl.getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
 				</div>
 			</div>
-			<ul>
+			<ul ng-if="!party.public">
 				Users who have not responded:
 				<li ng-repeat="invitedUser in ctrl.outstandingInvitations(party)">
 					{{ invitedUser | displayName }}
 				</li>
 			</ul>
+			<div ng-if="party.public">Everyone is invited!</div>
 		</li>
 	</ul>
 	<dir-pagination-controls on-page-change="ctrl.pageChanged(newPageNumber)"></dir-pagination-controls>

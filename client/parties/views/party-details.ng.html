@@ -1,20 +1,21 @@
 Party number is: {{ ctrl.partyId }} . Here you will see and change the details of the party:
 
-<input ng-model="ctrl.party.name">
-<input ng-model="ctrl.party.description">
+<input ng-model="ctrl.party.name" ng-disabled="ctrl.party.owner!=$root.currentUser._id">
+<input ng-model="ctrl.party.description" ng-disabled="ctrl.party.owner!=$root.currentUser._id">
 <label>Is public</label>
-<input type="checkbox" ng-model="party.public">
+<input type="checkbox" ng-model="party.public" ng-disabled="ctrl.party.owner!=$root.currentUser._id">
 	
 <button ng-click="ctrl.save()">Save</button>
 <button ng-click="ctrl.reset()">Reset form</button>
 <button><a ui-sref="parties">Cancel</a></button>
 
-<ul>
+<ul ng-show="ctrl.canInvite()">
 	Users to invite:
 	<li ng-repeat="user in ctrl.users | uninvited:ctrl.party">
 		<div>{{ user | displayName }}</div>
 		<button ng-click="ctrl.invite(user)">Invite</button>
 	</li>
+	<li ng-if="(ctrl.users | uninvited:ctrl.party).length <= 0">Everyone is invited!</li>
 </ul>
 <ul>
 	Users:

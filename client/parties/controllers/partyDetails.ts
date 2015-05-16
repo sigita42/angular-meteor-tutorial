@@ -13,7 +13,8 @@ class PartyDetailsCtrl {
         this.party = <IPartyAngularMeteorObject>$meteor.object(Parties, this.partyId);
         $scope.subscribe('parties');
         //Binding to the Meteor.users collection; false = we don't want to update that collection from the client; Subscribing to the publish method
-        $meteor.subscribe('users');
+        this.users = $meteor.collection(Meteor.users, false).subscribe('users');
+        
     }
     
     public invite(user: Meteor.User) {
@@ -36,6 +37,13 @@ class PartyDetailsCtrl {
     
     public reset(){
         this.party.reset();
+    }
+    
+    public canInvite(){
+        if (!this.party){
+            return false;
+        }
+        return !this.party.public && this.party.owner === Meteor.userId();
     }
 }
 
