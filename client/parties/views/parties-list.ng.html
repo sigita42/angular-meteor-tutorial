@@ -27,6 +27,32 @@
 			<p>{{party.description}}</p>
 			<button ng-click="ctrl.removeParty(party)">X</button>
 			<p><small>Posted by {{ ctrl.creator(party) | displayName }}</small></p>
+   			<div>
+		      <input type="button" value="I'm going!" ng-click="ctrl.rsvp(party._id, 'yes')">
+		      <input type="button" value="Maybe" ng-click="ctrl.rsvp(party._id, 'maybe')">
+		      <input type="button" value="No" ng-click="ctrl.rsvp(party._id, 'no')">
+		    </div>
+			<div>
+				Who is coming?
+				Yes - {{ (party.rsvps | filter:{rsvp: 'yes'}).length }}
+				Maybe - {{ (party.rsvps | filter:{rsvp: 'maybe'}).length }}
+				No - {{ (party.rsvps | filter:{rsvp: 'no'}).length }}
+				<div ng-repeat="rsvp in party.rsvps | filter:{rsvp: 'yes'}">
+					{{ ctrl.getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+				</div>
+				<div ng-repeat="rsvp in party.rsvps | filter:{rsvp: 'maybe'}">
+					{{ ctrl.getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+				</div>
+				<div ng-repeat="rsvp in party.rsvps | filter:{rsvp: 'no'}">
+					{{ ctrl.getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+				</div>
+			</div>
+			<ul>
+				Users who have not responded:
+				<li ng-repeat="invitedUser in ctrl.outstandingInvitations(party)">
+					{{ invitedUser | displayName }}
+				</li>
+			</ul>
 		</li>
 	</ul>
 	<dir-pagination-controls on-page-change="ctrl.pageChanged(newPageNumber)"></dir-pagination-controls>

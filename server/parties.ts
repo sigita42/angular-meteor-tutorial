@@ -19,6 +19,10 @@ module socially{
 				{$and: [
 					{owner: me.userId},
 					{owner: {$exists: true}}
+				]},
+				{$and:[
+					{invited: me.userId},
+					{invited: {$exists: true}}
 				]}
 		]}), { noReady: true});
 
@@ -33,6 +37,10 @@ module socially{
 				{$and: [
 					{owner: me.userId},
 					{owner: {$exists: true}}
+				]},
+				{$and:[
+					{invited: me.userId},
+					{invited: {$exists: true}}
 				]}
 			]}, options);
 	});

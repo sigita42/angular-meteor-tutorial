@@ -13,6 +13,7 @@ Party number is: {{ ctrl.partyId }} . Here you will see and change the details o
 	Users to invite:
 	<li ng-repeat="user in ctrl.users | uninvited:ctrl.party">
 		<div>{{ user | displayName }}</div>
+		<button ng-click="ctrl.invite(user)">Invite</button>
 	</li>
 </ul>
 <ul>

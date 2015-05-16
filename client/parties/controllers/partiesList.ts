@@ -15,6 +15,7 @@ class PartiesListCtrl {
     public sort = { name: 1 };
     public orderProperty = 1;
     public partiesCount: ICountsAngularMeteorObject;
+    public users: angular.meteor.AngularMeteorCollection<Meteor.User>;
         
     constructor($scope: ng.meteor.IScope, private $meteor: angular.meteor.IMeteorService, private $rootScope: ng.meteor.IRootScopeService) {
         
@@ -40,20 +41,8 @@ class PartiesListCtrl {
             });
         });
         $scope.$watch('ctrl.orderProperty', this.updateSorting.bind(this));
-        $meteor.subscribe('users');
+        this.users = $meteor.collection(Meteor.users, false).subscribe('users');
         
-//        function creator(party: IParty){
-//            if(!party)
-//                return;
-//            var owner: any = this.getUserById(party.owner);
-//            if(!owner)
-//                return "nobody";
-//                
-//            if ( $rootScope.currentUser )
-//                if( $rootScope.currentUser._id )
-//                    if (owner._id === $rootScope.currentUser._id)
-//                        return "me";
-//        };
     }
     
     public getUserById (userId: string){
@@ -91,6 +80,23 @@ class PartiesListCtrl {
                     return "me";
         // else
         return owner;
+    }
+    
+    public rsvp(partyId: string, rsvp: string){
+        this.$meteor.call('rsvp', partyId, rsvp).then(
+           (data) => {
+               console.log('success responding', data);
+           },
+           (err) => {
+               console.log('failed', err);
+           }
+        );
+    }
+    
+    public outstandingInvitations(party: IParty) {
+        return _.filter ( this.users, (user) => {
+            return ( _.contains ( party.invited, user._id ) && !_.findWhere( party.rsvps, { user: user._id }));
+        });
     }
 } 
         
