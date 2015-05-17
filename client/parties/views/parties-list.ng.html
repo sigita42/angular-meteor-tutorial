@@ -1,52 +1,79 @@
 <!--{{}} is a binding projecting application model, which is set up in the controller-->
-<div>
-	<form ng-show="$root.currentUser">
-		<label>Name</label>
-		<input ng-model="newParty.name">
-		<label>Description</label>
-		<input ng-model="newParty.description">
-		<label>Public</label>
-		<input type="checkbox" ng-model="newParty.public">
-		<button ng-click="newParty.owner=$root.currentUser._id; ctrl.parties.push(newParty)">Add</button>
-		<button ng-click="ctrl.removeAll()">Remove All</button>
-	</form>
-	<div ng-hide="$root.currentUser || $root.loggingIn">Log in to create a party!</div>
+<md-content layout-padding>
+  <div layout="column">
+		<md-whiteframe class="md-whiteframe-z1" layout layout-align="center center" ng-hide="$root.currentUser || $root.loggingIn">
+			<span>Log in to create a party!</span>
+		</md-whiteframe>
+		<form ng-show="$root.currentUser">
+	        <h2 class="md-headline">Create a new party:</h2>
+			<md-input-container>
+				<label>Name</label>
+				<input ng-model="newParty.name">
+			</md-input-container>
+			<md-input-container>
+				<label>Description</label>
+				<input ng-model="newParty.description">
+			</md-input-container>
+			<md-checkbox ng-model="newParty.public" id="public" aria-label="Public">
+				Public
+			</md-checkbox>
+			<md-button ng-click="newParty.owner=$root.currentUser._id; ctrl.parties.push(newParty)">Add</md-button>
+			<md-button ng-click="ctrl.removeAll()">Remove All</md-button>
+		</form>
+	</div>
 	
-	<h1 ng-repeat="greetname in ctrl.greetnames">Hello, {{greetname.name}}</h1>
-	<h1>Parties:</h1>
-	<div>
-		<input type="search" ng-model="ctrl.search" placeholder="Search">
-		<select ng-model="ctrl.orderProperty">
-			<option value="1">Ascending</option>
-			<option value="-1">Descending</option>
-		</select>
+	<div layout="column">
+		<h3 ng-repeat="greetname in ctrl.greetnames">Hello, {{greetname.name}}</h3>
+    	<h2 class="md-headline">Parties:</h2>
+		<form layout="row">
+			<md-input-container md-no-float>
+				<md-icon md-svg-icon="action:ic_search_24px"></md-icon>
+				<input type="text" ng-model="ctrl.search" placeholder="Search" aria-label="Search">
+			</md-input-container>
+		      <span flex></span>
+			<md-input-container>
+				<md-select ng-model="ctrl.orderProperty" placeholder="Sort Order">
+					<md-option value="1">Ascending</md-option>
+					<md-option value="-1">Descending</md-option>
+				</md-select>
+			</md-input-container>
+		</form>
+		<div class="angular-google-map-container">
+			<ui-gmap-google-map center="ctrl.map.center" zoom="ctrl.map.zoom">
+				<ui-gmap-markers models="ctrl.parties" coords="'location'" click="onClicked()" fit="true" idkey="'_id'" doRebuildAll="true">
+				</ui-gmap-markers>
+			</ui-gmap-google-map>
+		</div>
 	</div>
-	<div class="angular-google-map-container">
-		<ui-gmap-google-map center="ctrl.map.center" zoom="ctrl.map.zoom">
-			<ui-gmap-markers models="ctrl.parties" coords="'location'" click="onClicked()" fit="true" idkey="'_id'" doRebuildAll="true">
-			</ui-gmap-markers>
-		</ui-gmap-google-map>
-	</div>
-	<ul>
-		<li dir-paginate="party in ctrl.parties | itemsPerPage: ctrl.perPage" total-items="ctrl.partiesCount.count">
-<!--		<li dir-paginate="party in ctrl.parties | itemsPerPage: ctrl.perPage" total-items="10">-->
-			<a ui-sref="partyDetails({partyId: party._id})">{{party.name}}</a>
-			<p>{{party.description}}</p>
-			<button ng-click="ctrl.removeParty(party)" ng-show="$root.currentUser && $root.currentUser._id == party.owner">X</button>
-			<p><small>Posted by {{ ctrl.creator(party) | displayName }}</small></p>
-   			<div ng-show="$root.currentUser">
-		      <input type="button" value="I'm going!" ng-click="ctrl.rsvp(party._id, 'yes')">
-		      <input type="button" value="Maybe" ng-click="ctrl.rsvp(party._id, 'maybe')">
-		      <input type="button" value="No" ng-click="ctrl.rsvp(party._id, 'no')">
-		    </div>
+	<div layout="column" layout-padding>
+		<div dir-paginate="party in ctrl.parties | itemsPerPage: ctrl.perPage" total-items="ctrl.partiesCount.count" layout="column">
+			<div layout="row">
+       			<div flex="80">	
+					   <h2><a ui-sref="partyDetails({partyId: party._id})">{{party.name}}</a></h2>
+					   <p>{{party.description}}</p>
+				 </div>
+				 <span flex></span>
+				 <md-button ng-click="ctrl.removeParty(party)" ng-show="$root.currentUser && $root.currentUser._id == party.owner">
+				 	<md-icon md-svg-icon="content:ic_clear_24px"></md-icon>
+				 </md-button>
+			</div>
+			<div ng-show="$root.currentUser" layout="row">
+				<md-button ng-click="ctrl.rsvp(party._id, 'yes')">I'm going!</md-button>
+				<md-button ng-click="ctrl.rsvp(party._id, 'maybe')">Maybe</md-button>
+				<md-button ng-click="ctrl.rsvp(party._id, 'no')">No</md-button>
+			</div>
+			<div ng-if="party.public">Everyone is invited!</div>
 			<div ng-hide="$root.currentUser">
 				<i>Sign in to RSVP for this party!</i>
 			</div>
+			
 			<div>
-				Who is coming?
-				Yes - {{ (party.rsvps | filter:{rsvp: 'yes'}).length }}
-				Maybe - {{ (party.rsvps | filter:{rsvp: 'maybe'}).length }}
-				No - {{ (party.rsvps | filter:{rsvp: 'no'}).length }}
+				<strong>Who is coming?</strong>
+				<div>
+					Yes - {{ (party.rsvps | filter:{rsvp: 'yes'}).length }}
+					Maybe - {{ (party.rsvps | filter:{rsvp: 'maybe'}).length }}
+					No - {{ (party.rsvps | filter:{rsvp: 'no'}).length }}
+				</div>
 				<div ng-repeat="rsvp in party.rsvps | filter:{rsvp: 'yes'}">
 					{{ ctrl.getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
 				</div>
@@ -57,15 +84,14 @@
 					{{ ctrl.getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
 				</div>
 			</div>
-			<ul ng-if="!party.public">
+			<md-list ng-if="!party.public">
 				Users who have not responded:
-				<li ng-repeat="invitedUser in ctrl.outstandingInvitations(party)">
+				<md-list-item ng-repeat="invitedUser in ctrl.outstandingInvitations(party)">
 					{{ invitedUser | displayName }}
-				</li>
-			</ul>
-			<div ng-if="party.public">Everyone is invited!</div>
-		</li>
-	</ul>
+				</md-list-item>
+			</md-list>
+			<p><small>Posted by {{ ctrl.creator(party) | displayName }}</small></p>
+		</div>
+	</div>
 	<dir-pagination-controls on-page-change="ctrl.pageChanged(newPageNumber)"></dir-pagination-controls>
-
-</div>
+</md-content>
