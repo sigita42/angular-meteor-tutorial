@@ -1,27 +1,31 @@
-Party number is: {{ ctrl.partyId }} .
+<h3>Party number is: {{ ctrl.partyId }} . </h3>
 
 <legend>
   Here you will see and change the details of the party:
 </legend>
-
+	
 <form layout="column">
-	<md-input-container>
-		<label>Party Name</label>
-		<input ng-model="ctrl.party.name" ng-disabled="ctrl.party.owner!=$root.currentUser._id" type="text" aria-label="Name">
-	</md-input-container>
-	<md-input-container>
-		<label></label>
-		<input ng-model="ctrl.party.description" ng-disabled="ctrl.party.owner!=$root.currentUser._id" type="text" aria-label="Description">
-	</md-input-container>
-	<md-checkbox ng-model="party.public" ng-disabled="ctrl.party.owner!=$root.currentUser._id" aria-label="Public">
-		Is public
-	</md-checkbox>
-
-	<div layout="row" layout-align="left">
-		<md-button ng-click="ctrl.save()">Save</md-button>
-		<md-button ng-click="ctrl.reset()">Reset form</md-button>
-		<md-button ng-href="/parties">Cancel</md-button>
-	</div>
+	<md-card>
+		<md-card-content>
+			<md-input-container>
+				<label>Party Name</label>
+				<input ng-model="ctrl.party.name" ng-disabled="ctrl.party.owner!=$root.currentUser._id" type="text" aria-label="Name">
+			</md-input-container>
+			<md-input-container>
+				<label></label>
+				<input ng-model="ctrl.party.description" ng-disabled="ctrl.party.owner!=$root.currentUser._id" type="text" aria-label="Description">
+			</md-input-container>
+			<md-checkbox ng-model="party.public" ng-disabled="ctrl.party.owner!=$root.currentUser._id" aria-label="Public">
+				Is public
+			</md-checkbox>
+		
+			<div layout="row" layout-align="left">
+				<md-button ng-click="ctrl.save()">Save</md-button>
+				<md-button ng-click="ctrl.reset()">Reset form</md-button>
+				<md-button ng-href="/parties">Cancel</md-button>
+			</div>
+		</md-card-content>
+	</md-card>
 	
 	<md-list ng-show="ctrl.canInvite()">
 	    <md-subheader class="md-no-sticky">Users to invite:</md-subheader>
@@ -48,11 +52,19 @@ Party number is: {{ ctrl.partyId }} .
 			</div>
 		</md-list-item>
 	</md-list>
-
-  <div class="my-google-maps angular-google-map-container">
-    <ui-gmap-google-map center="ctrl.map.center" events="ctrl.map.events" zoom="ctrl.map.zoom">
-		<ui-gmap-marker coords="ctrl.party.location" options="ctrl.map.marker.options" events="ctrl.map.marker.events" idkey="ctrl.party._id">
-		</ui-gmap-marker>
-    </ui-gmap-google-map>
-  </div>
+	<md-card>
+		<md-card-content>
+			<div layout="column" layout-align="center center">
+				<h3>Location of this Party</h3>
+				<div class="party-details-maps">
+				  <div class="my-google-maps angular-google-map-container">
+				    <ui-gmap-google-map center="ctrl.map.center" events="ctrl.map.events" zoom="ctrl.map.zoom">
+						<ui-gmap-marker coords="ctrl.party.location" options="ctrl.map.marker.options" events="ctrl.map.marker.events" idkey="ctrl.party._id">
+						</ui-gmap-marker>
+				    </ui-gmap-google-map>
+				  </div>
+				</div>
+			</div>
+		</md-card-content>
+	</md-card>
 </form>

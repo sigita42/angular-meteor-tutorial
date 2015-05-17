@@ -6,7 +6,7 @@
    background-color: #ffffff;
  }
  
- .my-google-maps{
-   height:400px;
-   width:400px;
- }
+.angular-google-map-container {
+  height: 400px;
+  width: 700px;
+}

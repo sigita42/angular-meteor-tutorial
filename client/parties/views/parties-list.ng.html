@@ -38,25 +38,34 @@
 				</md-select>
 			</md-input-container>
 		</form>
-		<div class="my-google-maps angular-google-map-container">
-			<ui-gmap-google-map center="ctrl.map.center" zoom="ctrl.map.zoom">
-				<ui-gmap-markers models="ctrl.parties" coords="'location'" click="onClicked()" fit="true" idkey="'_id'" doRebuildAll="true">
-				</ui-gmap-markers>
-			</ui-gmap-google-map>
-		</div>
+		<md-card>
+			<md-card-content>
+				<div layout="column" layout-align="center center">
+					<h3>Parties' Locations</h3>
+					<div class="angular-google-map-container">
+						<ui-gmap-google-map center="ctrl.map.center" zoom="ctrl.map.zoom">
+							<ui-gmap-markers models="ctrl.parties" coords="'location'" click="onClicked()" fit="true" idkey="'_id'" doRebuildAll="true">
+							</ui-gmap-markers>
+						</ui-gmap-google-map>
+					</div>
+				</div>
+			</md-card-content>
+		</md-card>
 	</div>
 	<div layout="column" layout-padding>
 		<md-card dir-paginate="party in ctrl.parties | itemsPerPage: ctrl.perPage" total-items="ctrl.partiesCount.count" layout="column">
+			<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2><a ui-sref="partyDetails({partyId: party._id})">{{party.name}}</a></h2>
+				<span flex></span>
+				<md-button ng-click="ctrl.removeParty(party)" ng-show="$root.currentUser && $root.currentUser._id == party.owner">
+					<md-icon md-svg-icon="content:ic_clear_24px"></md-icon>
+				</md-button>
+			</div>
+			</md-toolbar>
 			<md-card-content>
 				<div layout="row">
-	       			<div flex="80">	
-						   <h2><a ui-sref="partyDetails({partyId: party._id})">{{party.name}}</a></h2>
-						   <p>{{party.description}}</p>
-					 </div>
-					 <span flex></span>
-					 <md-button ng-click="ctrl.removeParty(party)" ng-show="$root.currentUser && $root.currentUser._id == party.owner">
-					 	<md-icon md-svg-icon="content:ic_clear_24px"></md-icon>
-					 </md-button>
+				   <p>{{party.description}}</p>
 				</div>
 				<div ng-show="$root.currentUser" layout="row">
 					<md-button ng-click="ctrl.rsvp(party._id, 'yes')">I'm going!</md-button>

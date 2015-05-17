@@ -6,12 +6,12 @@
 <body>
   <div ng-app="socially" layout="column">
     <md-toolbar md-scroll-shrink layout="row" layout-align="start center" layout-padding>
-      <div>
-        <a href="/parties">Parties</a>
-      </div>
-      <span flex></span>
-      <div class="navbar-right navbar-text">
-        <meteor-include src="loginButtons"></meteor-include>
+      <div class="md-toolbar-tools">
+          <a href="/parties">Parties</a>
+        <span flex></span>
+        <div class="navbar-right navbar-text">
+          <meteor-include src="loginButtons"></meteor-include>
+        </div>
       </div>
     </md-toolbar>
     <div ui-view class="container-fluid"></div>
