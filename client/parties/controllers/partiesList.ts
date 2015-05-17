@@ -16,8 +16,9 @@ class PartiesListCtrl {
     public orderProperty = 1;
     public partiesCount: ICountsAngularMeteorObject;
     public users: angular.meteor.AngularMeteorCollection<Meteor.User>;
+    public map: any;
         
-    constructor($scope: ng.meteor.IScope, private $meteor: angular.meteor.IMeteorService, private $rootScope: ng.meteor.IRootScopeService) {
+    constructor($scope: ng.meteor.IScope, private $meteor: ng.meteor.IMeteorService, private $rootScope: ng.meteor.IRootScopeService, $state: ng.ui.IStateService) {
         
         this.parties = $meteor.collection(() => {
             return Parties.find({}, {
@@ -32,12 +33,26 @@ class PartiesListCtrl {
             var sort: any = $scope.getReactively('ctrl.sort');
             var search: any = $scope.getReactively('ctrl.search');
             
-            $scope.subscribe('parties', { 
+            $meteor.subscribe('parties', { 
                 limit: Math.floor(perPage),
                 skip: Math.floor((page - 1) * perPage),
                 sort: sort 
                 }, search).then(() => {
-                this.partiesCount = <ICountsAngularMeteorObject>$meteor.object(Counts, 'numberOfParties', false);
+                    this.partiesCount = <ICountsAngularMeteorObject>$meteor.object(Counts, 'numberOfParties', false);
+                    
+                    this.parties.forEach( (party) => {
+                        party.onClicked = () => {
+                            $state.go( 'partyDetails', { partyId: party._id});
+                        };
+                    });
+                    //Maps
+                    this.map = {
+                        center: {
+                            latitude: 45,
+                            longitude: -73
+                        },
+                        zoom: 8
+                    };
             });
         });
         $scope.$watch('ctrl.orderProperty', this.updateSorting.bind(this));
@@ -98,9 +113,11 @@ class PartiesListCtrl {
             return ( _.contains ( party.invited, user._id ) && !_.findWhere( party.rsvps, { user: user._id }));
         });
     }
+    
+
 } 
         
 angular.module("socially")
-    .controller("PartiesListCtrl", ['$scope', '$meteor', '$rootScope', PartiesListCtrl]);
+    .controller("PartiesListCtrl", ['$scope', '$meteor', '$rootScope', '$state', PartiesListCtrl]);
     
 }

@@ -23,3 +23,11 @@ Party number is: {{ ctrl.partyId }} . Here you will see and change the details o
 		<div>{{ user.emails[0].address }}</div>
 	</li>
 </ul>
+<div class="party-details-maps">
+  <div class="angular-google-map-container">
+    <ui-gmap-google-map center="ctrl.map.center" events="ctrl.map.events" zoom="ctrl.map.zoom">
+		<ui-gmap-marker coords="ctrl.party.location" options="ctrl.map.marker.options" events="ctrl.map.marker.events" idkey="ctrl.party._id">
+		</ui-gmap-marker>
+    </ui-gmap-google-map>
+  </div>
+</div>

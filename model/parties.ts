@@ -3,6 +3,11 @@
 module socially {
 	
 //Interfaces	
+	export interface ILocation {
+		latitude?: number;
+		longitude?: number;
+	}
+
 	export interface IParty {
 	    name: string;
 	    description: string;
@@ -12,6 +17,9 @@ module socially {
 		public: boolean;
 		title: string;
 		rsvps: string[];
+		location: ILocation;
+		
+		onClicked(): void;
 	}
 
 	export interface IGreetname {
