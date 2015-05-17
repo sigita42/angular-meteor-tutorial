@@ -25,21 +25,31 @@ Party number is: {{ ctrl.partyId }} .
 	
 	<md-list ng-show="ctrl.canInvite()">
 	    <md-subheader class="md-no-sticky">Users to invite:</md-subheader>
-		<md-list-item ng-repeat="user in ctrl.users | uninvited:ctrl.party">
-			<div>{{ user | displayName }}</div>
-			<md-button ng-click="ctrl.invite(user)">Invite</md-button>
+		<md-list-item ng-repeat="user in ctrl.users | uninvited:ctrl.party" class="md-2-line">
+			<div class="md-list-item-text">
+				<p>{{ user | displayName }}</p>
+				<p>
+					<md-button ng-click="ctrl.invite(user)">Invite</md-button>
+				</p>
+			</div>
 		</md-list-item>
-		<md-list-item ng-if="(ctrl.users | uninvited:ctrl.party).length <= 0">Everyone is invited!</md-list-item>
+		<md-list-item ng-if="(ctrl.users | uninvited:ctrl.party).length <= 0" class="md-1-line">
+			<div class="md-list-item-text">
+				<p>Everyone is invited!</p>
+			</div>
+		</md-list-item>
 	</md-list>
 	
 	<md-list>
 	    <md-subheader class="md-no-sticky">All Users:</md-subheader>
-		<md-list-item ng-repeat="user in ctrl.users">
-			<div>{{ user.emails[0].address }}</div>
+		<md-list-item ng-repeat="user in ctrl.users" class="md-1-line">
+			<div class="md-list-item-text">
+				<p>{{ user.emails[0].address }}</p>
+			</div>
 		</md-list-item>
 	</md-list>
 
-  <div class="angular-google-map-container">
+  <div class="my-google-maps angular-google-map-container">
     <ui-gmap-google-map center="ctrl.map.center" events="ctrl.map.events" zoom="ctrl.map.zoom">
 		<ui-gmap-marker coords="ctrl.party.location" options="ctrl.map.marker.options" events="ctrl.map.marker.events" idkey="ctrl.party._id">
 		</ui-gmap-marker>

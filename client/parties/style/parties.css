@@ -5,3 +5,8 @@
  .navbar {
    background-color: #ffffff;
  }
+ 
+ .my-google-maps{
+   height:400px;
+   width:400px;
+ }
