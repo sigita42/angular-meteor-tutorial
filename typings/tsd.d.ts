@@ -6,3 +6,5 @@
 /// <reference path="angular-meteor/angular-meteor.d.ts" />
 /// <reference path="jquery/jquery.d.ts" />
 /// <reference path="underscore/underscore.d.ts" />
+/// <reference path="leaflet-label/leaflet-label.d.ts" />
+/// <reference path="leaflet/leaflet.d.ts" />

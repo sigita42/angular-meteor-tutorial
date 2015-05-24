@@ -25,6 +25,12 @@
     },
     "underscore/underscore.d.ts": {
       "commit": "846a250e0a6f5e6adf6347ee4ca442a9d1abd8fc"
+    },
+    "leaflet-label/leaflet-label.d.ts": {
+      "commit": "aadd63ecae3feb76ea2d4be80511e266b5c2c4a7"
+    },
+    "leaflet/leaflet.d.ts": {
+      "commit": "aadd63ecae3feb76ea2d4be80511e266b5c2c4a7"
     }
   }
 }

@@ -2,7 +2,7 @@
 
 module socially {
     
-    angular.module('socially', ['angular-meteor', 'ui.router', 'angularUtils.directives.dirPagination', 'uiGmapgoogle-maps', 'ngMaterial']);
+    angular.module('socially', ['angular-meteor', 'ui.router', 'angularUtils.directives.dirPagination', 'uiGmapgoogle-maps', 'ngMaterial', 'leaflet-directive']);
     
     //Material icons we use in the app
     var themeIcons = [ '$mdIconProvider', function ($mdIconProvider) { $mdIconProvider 

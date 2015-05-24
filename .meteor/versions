@@ -15,6 +15,7 @@ angularui:angular-ui-router@0.2.14
 angularutils:pagination@0.7.0
 autoupdate@1.2.1
 base64@1.0.3
+bevanhunt:leaflet@0.3.14
 binary-heap@1.0.3
 blaze@2.1.2
 blaze-tools@1.0.3
@@ -49,6 +50,9 @@ minimongo@1.0.8
 mobile-status-bar@1.0.3
 mologie:typescript@0.0.9
 mongo@1.1.0
+mquandalle:bower@1.4.1
+mrt:leaflet-draw@0.2.3
+mrt:leaflet-label@0.2.1
 npm-bcrypt@0.7.8_2
 oauth@1.1.4
 oauth1@1.1.4

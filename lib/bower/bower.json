@@ -1,0 +1,8 @@
+{
+  "name": "angular-meteor-tutorial",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular-leaflet-directive": "*"
+  },
+  "private": true
+}
