@@ -4,5 +4,8 @@
   "dependencies": {
     "angular-leaflet-directive": "*"
   },
+  "ignoredDependencies": [
+    "angular", "font-awesome", "leaflet"
+  ],
   "private": true
 }
