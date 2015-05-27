@@ -8,3 +8,4 @@
 /// <reference path="underscore/underscore.d.ts" />
 /// <reference path="leaflet-label/leaflet-label.d.ts" />
 /// <reference path="leaflet/leaflet.d.ts" />
+/// <reference path="leaflet-draw/leaflet-draw.d.ts" />

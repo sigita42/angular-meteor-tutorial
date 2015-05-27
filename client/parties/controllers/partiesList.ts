@@ -8,7 +8,7 @@ module socially {
 interface ICountsAngularMeteorObject extends CountsContent, angular.meteor.AngularMeteorObject<CountsContent> {}
 
 interface ILeafletData {
-    getMap(mapId: string): ng.IPromise<L.Map>;
+    getMap(mapId: string, {drawControl: boolean}): ng.IPromise<L.Map>;
 }
 
 class PartiesListCtrl {
@@ -27,6 +27,7 @@ class PartiesListCtrl {
             lng: -0.09,
             zoom: 8
         }
+        
     }
     
     public parties: angular.meteor.AngularMeteorCollection<IParty>;
@@ -37,7 +38,7 @@ class PartiesListCtrl {
     public orderProperty = 1;
     public partiesCount: ICountsAngularMeteorObject;
     public users: angular.meteor.AngularMeteorCollection<Meteor.User>;
-    public map: any;
+//    public map: any;
     
     private leafletMap: L.Map;
         
@@ -68,27 +69,40 @@ class PartiesListCtrl {
                             $state.go( 'partyDetails', { partyId: party._id});
                         };
                     });
-                    //Maps
-                    this.map = {
-                        center: {
-                            latitude: 45,
-                            longitude: -73
-                        },
-                        zoom: 8
-                    };
+                    //Google Maps
+//                    this.map = {
+//                        center: {
+//                            latitude: 45,
+//                            longitude: -73
+//                        },
+//                        zoom: 8
+//                    };
             });
         });
         $scope.$watch('ctrl.orderProperty', this.updateSorting.bind(this));
         this.users = $meteor.collection(Meteor.users, false).subscribe('users');
         
         //Leaflet maps
-        leafletData.getMap('testMap').then(map => {  
+        leafletData.getMap('testMap', {drawControl: true}).then(map => {  
             this.leafletMap = map;
             this.leafletMap.setView([51.0333, 13.7333], 15);
             var circle = L.circle([51.0333, 13.7333], 10, {color: 'blue', fill: true});
             var infos = L.layerGroup([circle]);
             this.leafletMap.addLayer(infos);
-        })
+            
+            // Initialise the FeatureGroup to store editable layers
+            var drawnItems = new L.FeatureGroup();
+            this.leafletMap.addLayer(drawnItems);
+            
+            // Initialise the draw control and pass it the FeatureGroup of editable layers
+            var drawControl = new L.Control.Draw({
+                edit: {
+                    featureGroup: drawnItems
+                }
+            });
+            this.leafletMap.addControl(drawControl);
+        });
+        
     }
     
     public getUserById (userId: string){
